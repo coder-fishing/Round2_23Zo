@@ -4,8 +4,23 @@ import path from "path";
 
 const serviceAccountPath = path.resolve(__dirname, "../serviceAccountKey.json");
 
+const initializeFromEnv = () => {
+  const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
+  if (!raw) return false;
+
+  const serviceAccount = JSON.parse(raw) as admin.ServiceAccount;
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+  return true;
+};
+
 const initializeFirebase = () => {
   try {
+    if (initializeFromEnv()) {
+      return;
+    }
+
     if (fs.existsSync(serviceAccountPath)) {
       const raw = fs.readFileSync(serviceAccountPath, "utf8").trim();
 
