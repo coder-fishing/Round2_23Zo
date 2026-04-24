@@ -1,6 +1,6 @@
 export type SectionKey = "authors" | "books" | "reviews";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:3000/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || (process.env.NODE_ENV === "development" ? "http://localhost:3000/api" : "");
 
 const parseError = async (res: Response) => {
   try {
@@ -12,6 +12,10 @@ const parseError = async (res: Response) => {
 };
 
 export const apiRequest = async <T>(path: string, options: RequestInit = {}): Promise<T> => {
+  if (!API_BASE) {
+    throw new Error("Missing NEXT_PUBLIC_API_BASE environment variable");
+  }
+
   const res = await fetch(`${API_BASE}${path}`, {
     headers: {
       "Content-Type": "application/json"
