@@ -4,9 +4,9 @@ import TableShell from "@/app/components/ui/TableShell";
 export type ReviewRow = {
   id: string;
   content: string;
+  bookId: string;
   bookTitle: string | null;
   authorName: string | null;
-  authorId: string;
 };
 
 type Props = {

@@ -4,7 +4,7 @@ import TableShell from "@/app/components/ui/TableShell";
 export type BookRow = {
   id: string;
   title: string;
-  bookId: string;
+  authorId: string;
   authorName: string | null;
 };
 
